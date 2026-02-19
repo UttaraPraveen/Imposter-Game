@@ -1,0 +1,13 @@
+/* src/styles/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600&display=swap');
+
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+body {
+  background: #0a0a0f;
+  overflow-x: hidden;
+}

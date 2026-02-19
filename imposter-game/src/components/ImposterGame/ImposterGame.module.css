@@ -1,0 +1,384 @@
+/* ImposterGame.module.css */
+.app {
+  min-height: 100vh;
+  background: #0a0a0f;
+  position: relative;
+  overflow: hidden;
+  color: #e8e8f0;
+  font-family: 'Barlow', sans-serif;
+}
+
+.bgGrid {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,60,60,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,60,60,0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+}
+
+.bgGlow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,30,30,0.08) 0%, transparent 70%);
+  top: -200px;
+  right: -200px;
+  pointer-events: none;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.logo h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(56px, 12vw, 96px);
+  letter-spacing: 8px;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 0 60px rgba(220,30,30,0.4);
+}
+
+.logo h1 span {
+  color: #dc1e1e;
+}
+
+.logo p {
+  font-size: 13px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #555;
+  margin-top: 8px;
+}
+
+.card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.sectionLabel {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #dc1e1e;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.playerCountRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.countBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.countBtn:hover {
+  background: rgba(220,30,30,0.2);
+  border-color: #dc1e1e;
+}
+
+.countDisplay {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  color: #fff;
+  min-width: 60px;
+  text-align: center;
+  line-height: 1;
+}
+
+.playerInputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.playerInputWrap {
+  position: relative;
+}
+
+.playerNum {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: #dc1e1e;
+  font-weight: 600;
+  letter-spacing: 1px;
+  z-index: 1;
+}
+
+.textInput {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 12px 12px 12px 36px;
+  color: #fff;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.textInput:focus {
+  border-color: rgba(220,30,30,0.5);
+}
+
+.textInput::placeholder {
+  color: #444;
+}
+
+.genreGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.genreBtn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 12px;
+  color: #aaa;
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.genreBtn:hover {
+  background: rgba(220,30,30,0.1);
+  border-color: rgba(220,30,30,0.3);
+  color: #fff;
+}
+
+.genreBtnSelected {
+  background: rgba(220,30,30,0.15) !important;
+  border-color: #dc1e1e !important;
+  color: #fff !important;
+}
+
+.startBtn {
+  width: 100%;
+  background: #dc1e1e;
+  border: none;
+  border-radius: 12px;
+  padding: 18px;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.startBtn:hover:not(:disabled) {
+  background: #ff2828;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(220,30,30,0.4);
+}
+
+.startBtn:disabled {
+  background: #333;
+  color: #555;
+  cursor: not-allowed;
+}
+
+/* ─── Card Flip ─────────────────────────────────────── */
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+/* Outer wrapper — sets 3-D context, never transforms itself */
+.flipCard {
+  height: 140px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+/* Inner wrapper — THIS is what rotates */
+.flipCardInner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Apply rotation to the INNER element, not the outer card */
+.flipped {
+  transform: rotateY(180deg);
+}
+
+.flipCardFront,
+.flipCardBack {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.flipCardFront {
+  background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* Back face starts rotated 180° so it shows correctly when parent flips */
+.flipCardBack {
+  background: linear-gradient(135deg, #1a0a0a 0%, #0f0505 100%);
+  border: 1px solid rgba(220,30,30,0.4);
+  transform: rotateY(180deg);
+}
+
+.imposterBack {
+  background: linear-gradient(135deg, #dc1e1e 0%, #8b0000 100%);
+  border-color: #ff4444;
+}
+
+/* Front face content */
+.playerName {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: #fff;
+  text-align: center;
+}
+
+.tapHint {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #444;
+  margin-top: 8px;
+}
+
+/* Back face content */
+.revealLabel {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 8px;
+}
+
+.imposterBack .revealLabel {
+  color: rgba(255,255,255,0.7);
+}
+
+.revealWord {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 2px;
+  color: #fff;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.revealGenre {
+  font-size: 10px;
+  color: rgba(255,255,255,0.25);
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+.tapToHide {
+  font-size: 9px;
+  color: rgba(255,255,255,0.25);
+  margin-top: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Seen overlay on front face */
+.seenOverlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #444;
+  text-transform: uppercase;
+}
+
+/* ─── Bottom UI ─────────────────────────────────────── */
+
+.allSeenBanner {
+  text-align: center;
+  padding: 16px;
+  background: rgba(220,30,30,0.08);
+  border: 1px solid rgba(220,30,30,0.2);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #dc1e1e;
+}
+
+.resetBtn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 14px;
+  color: #666;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 20px;
+}
+
+.resetBtn:hover {
+  border-color: rgba(220,30,30,0.4);
+  color: #dc1e1e;
+}
