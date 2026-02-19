@@ -212,6 +212,12 @@ If you’re not sure where to start, try:
 
 - Supporting dark/light theme toggle
 
+- Add more game genres
+
+- Add contact, About page
+
+- Add Navbar
+
 ---
 
 ## 🤝 Code of Conduct
