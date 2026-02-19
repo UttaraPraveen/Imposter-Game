@@ -382,3 +382,36 @@
   border-color: rgba(220,30,30,0.4);
   color: #dc1e1e;
 }
+
+/* Add these to ImposterGame.module.css */
+
+.fullscreenOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 10, 0.95); /* Deep dark blur */
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.focusedCardWrapper {
+  width: 100%;
+  max-width: 400px;
+}
+
+.largeCard {
+  height: 300px !important; /* Make the focused card significantly taller */
+}
+
+.largeCard .revealWord {
+  font-size: 48px; /* Bigger text for focused view */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

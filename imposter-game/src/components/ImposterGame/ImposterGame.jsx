@@ -10,6 +10,7 @@ export default function ImposterGame() {
   const [gameData, setGameData] = useState(null);
   const [flipped, setFlipped] = useState([]);
   const [seen, setSeen] = useState([]);
+  const [selectedCard, setSelectedCard] = useState(null);
 
   const updateCount = (delta) => {
     const newCount = Math.min(10, Math.max(3, playerCount + delta));
@@ -33,16 +34,20 @@ export default function ImposterGame() {
     setGameData({ ...roles, players });
     setFlipped([]);
     setSeen([]);
+    setSelectedCard(null);
     setPhase("cards");
   }, [playerNames, playerCount, selectedGenre]);
 
   const handleFlip = (i) => {
     if (flipped.includes(i)) {
-      // Flipping back — mark as seen
+      // Closing the card
       setFlipped(flipped.filter((x) => x !== i));
-      if (!seen.includes(i)) setSeen([...seen, i]);
+      setSelectedCard(null); 
+      if (!seen.includes(i)) setSeen((prev) => [...prev, i]);
     } else {
+      // Opening the card
       setFlipped([...flipped, i]);
+      setSelectedCard(i); 
     }
   };
 
@@ -110,13 +115,38 @@ export default function ImposterGame() {
           </div>
         ) : (
           <div className={s.gameView}>
+            {/* FULLSCREEN OVERLAY: Shows only when a card is selected */}
+            {selectedCard !== null && (
+              <div className={s.fullscreenOverlay} onClick={() => handleFlip(selectedCard)}>
+                <div className={s.focusedCardWrapper}>
+                  <div className={`${s.flipCard} ${s.largeCard}`}>
+                    <div className={`${s.flipCardInner} ${s.flipped}`}>
+                      <div className={`${s.flipCardBack} ${selectedCard === gameData.imposterIndex ? s.imposterBack : ""}`}>
+                        <div className={s.revealLabel}>
+                          {selectedCard === gameData.imposterIndex ? "⚠ You Are" : "Your Word"}
+                        </div>
+                        <div className={s.revealWord}>
+                          {selectedCard === gameData.imposterIndex ? "IMPOSTER" : gameData.word}
+                        </div>
+                        {selectedCard !== gameData.imposterIndex && (
+                          <div className={s.revealGenre}>
+                            {gameData.genre.split(" ").slice(1).join(" ")}
+                          </div>
+                        )}
+                        <div className={s.tapToHide}>Tap to close and hide</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {allSeen && <div className={s.allSeenBanner}>✓ Start Discussing!</div>}
 
             <div className={s.cardsGrid}>
               {gameData.players.map((name, i) => {
                 const isFlipped = flipped.includes(i);
                 const isSeen = seen.includes(i);
-                const isImposter = i === gameData.imposterIndex;
 
                 return (
                   <div
@@ -124,10 +154,7 @@ export default function ImposterGame() {
                     className={s.flipCard}
                     onClick={() => !isSeen && handleFlip(i)}
                   >
-                    {/* The inner div is what actually rotates */}
                     <div className={`${s.flipCardInner} ${isFlipped ? s.flipped : ""}`}>
-
-                      {/* FRONT */}
                       <div className={s.flipCardFront}>
                         {isSeen && !isFlipped && (
                           <div className={s.seenOverlay}>Seen ✓</div>
@@ -135,29 +162,6 @@ export default function ImposterGame() {
                         <span className={s.playerName}>{name}</span>
                         <span className={s.tapHint}>Tap to reveal</span>
                       </div>
-
-                      {/* BACK */}
-                      <div
-                        className={`${s.flipCardBack} ${isImposter ? s.imposterBack : ""}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (isFlipped) handleFlip(i);
-                        }}
-                      >
-                        <div className={s.revealLabel}>
-                          {isImposter ? "⚠ You Are" : "Your Word"}
-                        </div>
-                        <div className={s.revealWord}>
-                          {isImposter ? "IMPOSTER" : gameData.word}
-                        </div>
-                        {!isImposter && (
-                          <div className={s.revealGenre}>
-                            {gameData.genre.split(" ").slice(1).join(" ")}
-                          </div>
-                        )}
-                        <div className={s.tapToHide}>Tap to hide</div>
-                      </div>
-
                     </div>
                   </div>
                 );
