@@ -415,3 +415,90 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* ─── Instruction Manual Overlay ───────────────────────── */
+
+.manualBtn {
+  width: 100%;
+  background: rgba(220,30,30,0.15);
+  border: 1px solid #dc1e1e;
+  border-radius: 12px;
+  padding: 14px;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.manualBtn:hover {
+  background: #dc1e1e;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220,30,30,0.4);
+}
+
+/* Overlay container */
+.manualOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Overlay content */
+.manualContent {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 500px;
+  width: 100%;
+  color: #fff;
+  font-family: 'Barlow', sans-serif;
+}
+
+.manualContent h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(24px, 5vw, 36px);
+  text-align: center;
+  margin-bottom: 20px;
+  color: #dc1e1e;
+}
+
+.manualContent ul {
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.closeManualBtn {
+  display: block;
+  margin: 24px auto 0 auto;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid #dc1e1e;
+  background: rgba(220,30,30,0.15);
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.closeManualBtn:hover {
+  background: #dc1e1e;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220,30,30,0.4);
+}
