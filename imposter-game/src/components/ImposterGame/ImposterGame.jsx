@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { GENRES, assignRoles } from "./constants";
 import s from "./ImposterGame.module.css";
+import InstructionManual from "./InstructionManual";
 
 export default function ImposterGame() {
   const [phase, setPhase] = useState("setup");
@@ -11,6 +12,7 @@ export default function ImposterGame() {
   const [flipped, setFlipped] = useState([]);
   const [seen, setSeen] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [showManual, setShowManual] = useState(false);
 
   const updateCount = (delta) => {
     const newCount = Math.min(10, Math.max(3, playerCount + delta));
@@ -108,6 +110,10 @@ export default function ImposterGame() {
                 ))}
               </div>
             </div>
+            <button className={s.manualBtn} onClick={() => setShowManual(true)}>
+  Show Instructions
+</button>
+{showManual && <InstructionManual onClose={() => setShowManual(false)} />}
 
             <button className={s.startBtn} disabled={!canStart} onClick={startGame}>
               Start Game
