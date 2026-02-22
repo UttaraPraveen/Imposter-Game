@@ -502,3 +502,19 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(220,30,30,0.4);
 }
+
+.musicBtn {
+  margin-top: 12px;
+  padding: 8px 18px;
+  border-radius: 25px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff4d6d, #ff758f);
+  color: white;
+  transition: 0.3s ease;
+}
+
+.musicBtn:hover {
+  transform: scale(1.05);
+}
