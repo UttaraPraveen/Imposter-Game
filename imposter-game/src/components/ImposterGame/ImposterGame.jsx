@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { GENRES, assignRoles } from "./constants";
 import s from "./ImposterGame.module.css";
 import InstructionManual from "./InstructionManual";
+import bgMusic from "../../assets/imposter.mp3";
 
 export default function ImposterGame() {
   const [phase, setPhase] = useState("setup");
@@ -13,6 +14,38 @@ export default function ImposterGame() {
   const [seen, setSeen] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
   const [showManual, setShowManual] = useState(false);
+
+  const [musicOn, setMusicOn] = useState(true);
+const audioRef = useRef(null);
+
+useEffect(() => {
+  const audio = new Audio(bgMusic);
+  audio.loop = true;
+  audio.volume = 0.5;
+
+  audioRef.current = audio;
+
+  // Try autoplay immediately
+  audio.play().catch(() => {
+    // If autoplay blocked, start on first user interaction
+    const startMusic = () => {
+      audio.play();
+      document.removeEventListener("click", startMusic);
+      document.removeEventListener("touchstart", startMusic);
+    };
+
+    document.addEventListener("click", startMusic);
+    document.addEventListener("touchstart", startMusic);
+  });
+
+  return () => {
+    audio.pause();
+  };
+}, []);
+
+  const toggleMusic = () => {
+    setMusicOn((prev) => !prev);
+  };
 
   const updateCount = (delta) => {
     const newCount = Math.min(10, Math.max(3, playerCount + delta));
@@ -30,29 +63,8 @@ export default function ImposterGame() {
     setPlayerNames(next);
   };
 
-  // ✅ NEW: Make duplicate names unique
-  const makeNamesUnique = (names) => {
-    const nameCount = {};
-
-    return names.map((name) => {
-      if (nameCount[name]) {
-        nameCount[name] += 1;
-        return `${name} (${nameCount[name]})`;
-      } else {
-        nameCount[name] = 1;
-        return name;
-      }
-    });
-  };
-
   const startGame = useCallback(() => {
-    let players = playerNames
-      .slice(0, playerCount)
-      .map((n) => n.trim());
-
-    // ✅ Apply duplicate handling
-    players = makeNamesUnique(players);
-
+    const players = playerNames.slice(0, playerCount).map((n) => n.trim());
     const roles = assignRoles(players, selectedGenre);
     setGameData({ ...roles, players });
     setFlipped([]);
@@ -63,21 +75,19 @@ export default function ImposterGame() {
 
   const handleFlip = (i) => {
     if (flipped.includes(i)) {
+      // Closing the card
       setFlipped(flipped.filter((x) => x !== i));
       setSelectedCard(null);
       if (!seen.includes(i)) setSeen((prev) => [...prev, i]);
     } else {
+      // Opening the card
       setFlipped([...flipped, i]);
       setSelectedCard(i);
     }
   };
 
-  const canStart =
-    playerNames.slice(0, playerCount).every((n) => n.trim()) &&
-    selectedGenre;
-
-  const allSeen =
-    gameData && seen.length === gameData.players.length;
+  const canStart = playerNames.slice(0, playerCount).every((n) => n.trim()) && selectedGenre;
+  const allSeen = gameData && seen.length === gameData.players.length;
 
   return (
     <div className={s.app}>
@@ -88,6 +98,12 @@ export default function ImposterGame() {
         <header className={s.logo}>
           <h1>IMPOS<span>TER</span></h1>
           <p>Who is among us?</p>
+          <button
+            className={s.musicBtn}
+            onClick={toggleMusic}
+          >
+            {musicOn ? "🔊 Music On" : "🔇 Music Off"}
+          </button>
         </header>
 
         {phase === "setup" ? (
@@ -95,19 +111,9 @@ export default function ImposterGame() {
             <div className={s.card}>
               <div className={s.sectionLabel}>Number of Players</div>
               <div className={s.playerCountRow}>
-                <button
-                  className={s.countBtn}
-                  onClick={() => updateCount(-1)}
-                >
-                  −
-                </button>
+                <button className={s.countBtn} onClick={() => updateCount(-1)}>−</button>
                 <div className={s.countDisplay}>{playerCount}</div>
-                <button
-                  className={s.countBtn}
-                  onClick={() => updateCount(1)}
-                >
-                  +
-                </button>
+                <button className={s.countBtn} onClick={() => updateCount(1)}>+</button>
               </div>
             </div>
 
@@ -122,9 +128,7 @@ export default function ImposterGame() {
                       type="text"
                       placeholder={`Player ${i + 1}`}
                       value={name}
-                      onChange={(e) =>
-                        updateName(i, e.target.value)
-                      }
+                      onChange={(e) => updateName(i, e.target.value)}
                     />
                   </div>
                 ))}
@@ -137,11 +141,7 @@ export default function ImposterGame() {
                 {Object.keys(GENRES).map((genre) => (
                   <button
                     key={genre}
-                    className={`${s.genreBtn} ${
-                      selectedGenre === genre
-                        ? s.genreBtnSelected
-                        : ""
-                    }`}
+                    className={`${s.genreBtn} ${selectedGenre === genre ? s.genreBtnSelected : ""}`}
                     onClick={() => setSelectedGenre(genre)}
                   >
                     {genre}
@@ -149,74 +149,36 @@ export default function ImposterGame() {
                 ))}
               </div>
             </div>
-
-            <button
-              className={s.manualBtn}
-              onClick={() => setShowManual(true)}
-            >
+            <button className={s.manualBtn} onClick={() => setShowManual(true)}>
               Show Instructions
             </button>
+            {showManual && <InstructionManual onClose={() => setShowManual(false)} />}
 
-            {showManual && (
-              <InstructionManual
-                onClose={() => setShowManual(false)}
-              />
-            )}
-
-            <button
-              className={s.startBtn}
-              disabled={!canStart}
-              onClick={startGame}
-            >
+            <button className={s.startBtn} disabled={!canStart} onClick={startGame}>
               Start Game
             </button>
           </div>
         ) : (
           <div className={s.gameView}>
+            {/* FULLSCREEN OVERLAY: Shows only when a card is selected */}
             {selectedCard !== null && (
-              <div
-                className={s.fullscreenOverlay}
-                onClick={() => handleFlip(selectedCard)}
-              >
+              <div className={s.fullscreenOverlay} onClick={() => handleFlip(selectedCard)}>
                 <div className={s.focusedCardWrapper}>
-                  <div
-                    className={`${s.flipCard} ${s.largeCard}`}
-                  >
-                    <div
-                      className={`${s.flipCardInner} ${s.flipped}`}
-                    >
-                      <div
-                        className={`${s.flipCardBack} ${
-                          selectedCard ===
-                          gameData.imposterIndex
-                            ? s.imposterBack
-                            : ""
-                        }`}
-                      >
+                  <div className={`${s.flipCard} ${s.largeCard}`}>
+                    <div className={`${s.flipCardInner} ${s.flipped}`}>
+                      <div className={`${s.flipCardBack} ${selectedCard === gameData.imposterIndex ? s.imposterBack : ""}`}>
                         <div className={s.revealLabel}>
-                          {selectedCard ===
-                          gameData.imposterIndex
-                            ? "⚠ You Are"
-                            : "Your Word"}
+                          {selectedCard === gameData.imposterIndex ? "⚠ You Are" : "Your Word"}
                         </div>
                         <div className={s.revealWord}>
-                          {selectedCard ===
-                          gameData.imposterIndex
-                            ? "IMPOSTER"
-                            : gameData.word}
+                          {selectedCard === gameData.imposterIndex ? "IMPOSTER" : gameData.word}
                         </div>
-                        {selectedCard !==
-                          gameData.imposterIndex && (
+                        {selectedCard !== gameData.imposterIndex && (
                           <div className={s.revealGenre}>
-                            {gameData.genre
-                              .split(" ")
-                              .slice(1)
-                              .join(" ")}
+                            {gameData.genre.split(" ").slice(1).join(" ")}
                           </div>
                         )}
-                        <div className={s.tapToHide}>
-                          Tap to close and hide
-                        </div>
+                        <div className={s.tapToHide}>Tap to close and hide</div>
                       </div>
                     </div>
                   </div>
@@ -224,11 +186,7 @@ export default function ImposterGame() {
               </div>
             )}
 
-            {allSeen && (
-              <div className={s.allSeenBanner}>
-                ✓ Start Discussing!
-              </div>
-            )}
+            {allSeen && <div className={s.allSeenBanner}>✓ Start Discussing!</div>}
 
             <div className={s.cardsGrid}>
               {gameData.players.map((name, i) => {
@@ -239,27 +197,15 @@ export default function ImposterGame() {
                   <div
                     key={i}
                     className={s.flipCard}
-                    onClick={() =>
-                      !isSeen && handleFlip(i)
-                    }
+                    onClick={() => !isSeen && handleFlip(i)}
                   >
-                    <div
-                      className={`${s.flipCardInner} ${
-                        isFlipped ? s.flipped : ""
-                      }`}
-                    >
+                    <div className={`${s.flipCardInner} ${isFlipped ? s.flipped : ""}`}>
                       <div className={s.flipCardFront}>
                         {isSeen && !isFlipped && (
-                          <div className={s.seenOverlay}>
-                            Seen ✓
-                          </div>
+                          <div className={s.seenOverlay}>Seen ✓</div>
                         )}
-                        <span className={s.playerName}>
-                          {name}
-                        </span>
-                        <span className={s.tapHint}>
-                          Tap to reveal
-                        </span>
+                        <span className={s.playerName}>{name}</span>
+                        <span className={s.tapHint}>Tap to reveal</span>
                       </div>
                     </div>
                   </div>
@@ -267,10 +213,7 @@ export default function ImposterGame() {
               })}
             </div>
 
-            <button
-              className={s.resetBtn}
-              onClick={() => setPhase("setup")}
-            >
+            <button className={s.resetBtn} onClick={() => setPhase("setup")}>
               ← New Game
             </button>
           </div>
