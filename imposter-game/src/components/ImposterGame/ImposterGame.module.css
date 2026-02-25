@@ -563,3 +563,145 @@
   color: #000;
   box-shadow: 0 0 15px #00ffd0;
 }
+
+/* ─── Phase UI ──────────────────────────────────────── */
+
+.phaseBadge {
+  display: inline-block;
+  background: rgba(220,30,30,0.15);
+  border: 1px solid rgba(220,30,30,0.4);
+  border-radius: 20px;
+  padding: 6px 18px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #dc1e1e;
+  font-weight: 600;
+  margin-bottom: 12px;
+  animation: fadeIn 0.4s ease;
+}
+
+.phaseHint {
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 28px;
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+  animation: fadeIn 0.4s ease;
+}
+
+.actionBtn {
+  width: 100%;
+  background: #dc1e1e;
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 12px;
+  animation: fadeIn 0.4s ease;
+}
+
+.actionBtn:hover:not(:disabled) {
+  background: #ff2828;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(220,30,30,0.4);
+}
+
+.actionBtn:disabled {
+  background: #333;
+  color: #555;
+  cursor: not-allowed;
+}
+
+/* ─── Voting Phase ───────────────────────────────────── */
+
+.voteGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+  animation: fadeIn 0.4s ease;
+}
+
+.voteCard {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 20px 12px;
+  color: #aaa;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.voteCard:hover {
+  background: rgba(220,30,30,0.1);
+  border-color: rgba(220,30,30,0.3);
+  color: #fff;
+}
+
+.voteCardSelected {
+  background: rgba(220,30,30,0.2) !important;
+  border-color: #dc1e1e !important;
+  color: #fff !important;
+  box-shadow: 0 0 20px rgba(220,30,30,0.25);
+}
+
+/* ─── Result Phase ───────────────────────────────────── */
+
+.resultCard {
+  border-radius: 16px;
+  padding: 36px 28px;
+  text-align: center;
+  margin-bottom: 24px;
+  animation: fadeIn 0.5s ease;
+}
+
+.verdictCaught {
+  background: rgba(30,180,80,0.1);
+  border: 1px solid rgba(30,180,80,0.4);
+}
+
+.verdictMissed {
+  background: rgba(220,30,30,0.1);
+  border: 1px solid rgba(220,30,30,0.4);
+}
+
+.verdictTitle {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 8vw, 52px);
+  letter-spacing: 4px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.verdictDetail {
+  font-size: 14px;
+  color: #aaa;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+
+.resultWordLabel {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.resultWord {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(28px, 6vw, 44px);
+  letter-spacing: 4px;
+  color: #dc1e1e;
+}

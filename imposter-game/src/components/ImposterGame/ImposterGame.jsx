@@ -14,34 +14,35 @@ export default function ImposterGame() {
   const [seen, setSeen] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
   const [showManual, setShowManual] = useState(false);
+  const [suspect, setSuspect] = useState(null);
 
   const [musicOn, setMusicOn] = useState(true);
-const audioRef = useRef(null);
+  const audioRef = useRef(null);
 
-useEffect(() => {
-  const audio = new Audio(bgMusic);
-  audio.loop = true;
-  audio.volume = 0.5;
+  useEffect(() => {
+    const audio = new Audio(bgMusic);
+    audio.loop = true;
+    audio.volume = 0.5;
 
-  audioRef.current = audio;
+    audioRef.current = audio;
 
-  // Try autoplay immediately
-  audio.play().catch(() => {
-    // If autoplay blocked, start on first user interaction
-    const startMusic = () => {
-      audio.play();
-      document.removeEventListener("click", startMusic);
-      document.removeEventListener("touchstart", startMusic);
+    // Try autoplay immediately
+    audio.play().catch(() => {
+      // If autoplay blocked, start on first user interaction
+      const startMusic = () => {
+        audio.play();
+        document.removeEventListener("click", startMusic);
+        document.removeEventListener("touchstart", startMusic);
+      };
+
+      document.addEventListener("click", startMusic);
+      document.addEventListener("touchstart", startMusic);
+    });
+
+    return () => {
+      audio.pause();
     };
-
-    document.addEventListener("click", startMusic);
-    document.addEventListener("touchstart", startMusic);
-  });
-
-  return () => {
-    audio.pause();
-  };
-}, []);
+  }, []);
 
   const toggleMusic = () => {
     setMusicOn((prev) => !prev);
@@ -70,7 +71,10 @@ useEffect(() => {
     setFlipped([]);
     setSeen([]);
     setSelectedCard(null);
+    setSuspect(null);
     setPhase("cards");
+    setStartingPlayerIndex(null);
+    setShowStarter(false);
   }, [playerNames, playerCount, selectedGenre]);
 
   const handleFlip = (i) => {
@@ -93,12 +97,12 @@ useEffect(() => {
   const [showStarter, setShowStarter] = useState(false);
 
   useEffect(() => {
-  if (allSeen && startingPlayerIndex === null) {
-    const randomIndex = Math.floor(Math.random() * gameData.players.length);
-    setStartingPlayerIndex(randomIndex);
-    setShowStarter(true);
-  }
-}, [allSeen, gameData, startingPlayerIndex]);
+    if (allSeen && startingPlayerIndex === null) {
+      const randomIndex = Math.floor(Math.random() * gameData.players.length);
+      setStartingPlayerIndex(randomIndex);
+      setShowStarter(true);
+    }
+  }, [allSeen, gameData, startingPlayerIndex]);
   return (
     <div className={s.app}>
       <div className={s.bgGrid} />
@@ -144,21 +148,6 @@ useEffect(() => {
                 ))}
               </div>
             </div>
-                {allSeen && <div className={s.allSeenBanner}>✓ Start Discussing!</div>}
-                {allSeen && showStarter && startingPlayerIndex !== null && (
-  <div className={s.starterBanner}>
-    ✨ {gameData.players[startingPlayerIndex]} starts the round!
-    <button
-      className={s.rerollBtn}
-      onClick={() => {
-        const newIndex = Math.floor(Math.random() * gameData.players.length);
-        setStartingPlayerIndex(newIndex);
-      }}
-    >
-      🔁 Re-roll
-    </button>
-  </div>
-)}
             <div className={s.card}>
               <div className={s.sectionLabel}>Choose Genre</div>
               <div className={s.genreGrid}>
@@ -182,8 +171,11 @@ useEffect(() => {
               Start Game
             </button>
           </div>
-        ) : (
+        ) : phase === "cards" ? (
           <div className={s.gameView}>
+            <div className={s.phaseBadge}>🃏 Reveal Phase</div>
+            <div className={s.phaseHint}>Each player, tap your card privately to see your role.</div>
+
             {/* FULLSCREEN OVERLAY: Shows only when a card is selected */}
             {selectedCard !== null && (
               <div className={s.fullscreenOverlay} onClick={() => handleFlip(selectedCard)}>
@@ -210,60 +202,95 @@ useEffect(() => {
               </div>
             )}
 
-            {allSeen && <div className={s.allSeenBanner}>✓ Start Discussing!</div>}
+            {allSeen && (
+              <>
+                <div className={s.allSeenBanner}>✓ Everyone has seen their roles!</div>
 
-{allSeen && showStarter && startingPlayerIndex !== null && (
-  <div className={s.starterBanner}>
-    ✨ {gameData.players[startingPlayerIndex]} starts the round!
-    <button
-      className={s.rerollBtn}
-      onClick={() => {
-        const newIndex = Math.floor(Math.random() * gameData.players.length);
-        setStartingPlayerIndex(newIndex);
-      }}
-    >
-      🔁 Re-roll
-    </button>
-  </div>
-)}
-
-<div className={s.cardsGrid}>
-  {gameData.players.map((name, i) => {
-    const isFlipped = flipped.includes(i);
-    const isSeen = seen.includes(i);
-
-    return (
-      <div
-        key={i}
-        className={s.flipCard}
-        onClick={() => !isSeen && handleFlip(i)}
-      >
-        <div className={`${s.flipCardInner} ${isFlipped ? s.flipped : ""}`}>
-          <div className={s.flipCardFront}>
-            {isSeen && !isFlipped && (
-              <div className={s.seenOverlay}>Seen ✓</div>
+                {showStarter && startingPlayerIndex !== null && (
+                  <div className={s.starterBanner}>
+                    ✨ {gameData.players[startingPlayerIndex]} starts the round!
+                    <button
+                      className={s.rerollBtn}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const newIndex = Math.floor(Math.random() * gameData.players.length);
+                        setStartingPlayerIndex(newIndex);
+                      }}
+                    >
+                      🔁 Re-roll
+                    </button>
+                  </div>
+                )}
+                <button
+                  className={s.actionBtn}
+                  onClick={() => setPhase("discussion")}
+                >
+                  Start Discussion →
+                </button>
+              </>
             )}
-            <span className={s.playerName}>{name}</span>
-            <span className={s.tapHint}>Tap to reveal</span>
+
+            <div className={s.cardsGrid}>
+              {gameData.players.map((name, i) => {
+                const isFlipped = flipped.includes(i);
+                const isSeen = seen.includes(i);
+
+                return (
+                  <div
+                    key={i}
+                    className={s.flipCard}
+                    onClick={() => !isSeen && handleFlip(i)}
+                  >
+                    <div className={`${s.flipCardInner} ${isFlipped ? s.flipped : ""}`}>
+                      <div className={s.flipCardFront}>
+                        {isSeen && !isFlipped && (
+                          <div className={s.seenOverlay}>Seen ✓</div>
+                        )}
+                        <span className={s.playerName}>{name}</span>
+                        <span className={s.tapHint}>Tap to reveal</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <button
+              className={s.resetBtn}
+              onClick={() => {
+                setPhase("setup");
+                setStartingPlayerIndex(null);
+                setShowStarter(false);
+              }}
+            >
+              ← New Game
+            </button>
           </div>
-        </div>
-      </div>
-    );
-  })}
-</div>
-<button
-  className={s.resetBtn}
-  onClick={() => {
-    setPhase("setup");
-    setStartingPlayerIndex(null);
-    setShowStarter(false);
-  }}
->
-  ← New Game
-</button>
+        ) : (
+          <div className={s.gameView}>
+            <div className={s.phaseBadge}>💬 Discussion Phase</div>
+
+            {showStarter && startingPlayerIndex !== null && (
+              <div className={s.starterBanner}>
+                ✨ {gameData.players[startingPlayerIndex]} starts the round!
+              </div>
+            )}
+
+            <div className={s.phaseHint}>Talk to find the imposter!</div>
+
+            <button
+              className={s.resetBtn}
+              onClick={() => {
+                setPhase("setup");
+                setStartingPlayerIndex(null);
+                setShowStarter(false);
+              }}
+            >
+              ← Home
+            </button>
           </div>
         )}
-        </div>
-        </div>
+      </div>
+    </div>
   );
 }
