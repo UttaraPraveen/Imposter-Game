@@ -15,7 +15,8 @@ export default function ImposterGame() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [showManual, setShowManual] = useState(false);
   const [suspect, setSuspect] = useState(null);
-
+  const [timerDuration, setTimerDuration] = useState(2); // in minutes
+  const [timeLeft, setTimeLeft] = useState(null);
   const [musicOn, setMusicOn] = useState(true);
   const audioRef = useRef(null);
 
@@ -103,6 +104,24 @@ export default function ImposterGame() {
       setShowStarter(true);
     }
   }, [allSeen, gameData, startingPlayerIndex]);
+  useEffect(() => {
+  if (phase !== "discussion" || timeLeft === null) return;
+  if (timeLeft <= 0) return;
+
+  const interval = setInterval(() => {
+    setTimeLeft((prev) => {
+      if (prev <= 1) {
+        clearInterval(interval);
+        const audio = new Audio("https://www.soundjay.com/buttons/beep-01a.mp3");
+        audio.play().catch(() => {});
+        return 0;
+      }
+      return prev - 1;
+    });
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [phase, timeLeft]);
   return (
     <div className={s.app}>
       <div className={s.bgGrid} />
@@ -162,6 +181,20 @@ export default function ImposterGame() {
                 ))}
               </div>
             </div>
+            <div className={s.card}>
+  <div className={s.sectionLabel}>Discussion Timer</div>
+  <div className={s.playerCountRow}>
+    {[1, 2, 3, 5].map((min) => (
+      <button
+        key={min}
+        className={`${s.genreBtn} ${timerDuration === min ? s.genreBtnSelected : ""}`}
+        onClick={() => setTimerDuration(min)}
+      >
+        {min} min
+      </button>
+    ))}
+  </div>
+</div>
             <button className={s.manualBtn} onClick={() => setShowManual(true)}>
               Show Instructions
             </button>
@@ -174,8 +207,40 @@ export default function ImposterGame() {
         ) : phase === "cards" ? (
           <div className={s.gameView}>
             <div className={s.phaseBadge}>🃏 Reveal Phase</div>
-            <div className={s.phaseHint}>Each player, tap your card privately to see your role.</div>
-
+            {timeLeft !== null && (
+  <div style={{ textAlign: "center", margin: "1rem 0" }}>
+    <div style={{
+      fontSize: "4rem",
+      fontWeight: "bold",
+      color: timeLeft <= 30 ? "#ff4444" : timeLeft <= 60 ? "#ffaa00" : "#00ffcc",
+      transition: "color 0.5s"
+    }}>
+      {String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
+      {String(timeLeft % 60).padStart(2, "0")}
+    </div>
+    <div style={{
+      background: "#1a1a2e",
+      borderRadius: "8px",
+      height: "10px",
+      width: "100%",
+      maxWidth: "300px",
+      margin: "0.5rem auto"
+    }}>
+      <div style={{
+        height: "100%",
+        borderRadius: "8px",
+        width: `${(timeLeft / (timerDuration * 60)) * 100}%`,
+        background: timeLeft <= 30 ? "#ff4444" : timeLeft <= 60 ? "#ffaa00" : "#00ffcc",
+        transition: "width 1s linear, background 0.5s"
+      }} />
+    </div>
+    {timeLeft === 0 && (
+      <div style={{ fontSize: "1.5rem", color: "#ff4444", marginTop: "0.5rem" }}>
+        ⏰ Time's up! Vote now!
+      </div>
+    )}
+  </div>
+)}
             {/* FULLSCREEN OVERLAY: Shows only when a card is selected */}
             {selectedCard !== null && (
               <div className={s.fullscreenOverlay} onClick={() => handleFlip(selectedCard)}>
@@ -223,7 +288,9 @@ export default function ImposterGame() {
                 )}
                 <button
                   className={s.actionBtn}
-                  onClick={() => setPhase("discussion")}
+                  onClick={() => {setTimeLeft(timerDuration * 60);
+                    setPhase("discussion")
+                  }}
                 >
                   Start Discussion →
                 </button>
@@ -276,7 +343,42 @@ export default function ImposterGame() {
               </div>
             )}
 
-            <div className={s.phaseHint}>Talk to find the imposter!</div>
+            {timeLeft !== null && (
+  <div style={{ textAlign: "center", margin: "1rem 0" }}>
+    <div style={{
+      fontSize: "4rem",
+      fontWeight: "bold",
+      color: timeLeft <= 30 ? "#ff4444" : timeLeft <= 60 ? "#ffaa00" : "#00ffcc",
+      transition: "color 0.5s"
+    }}>
+      {String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
+      {String(timeLeft % 60).padStart(2, "0")}
+    </div>
+    <div style={{
+      background: "#1a1a2e",
+      borderRadius: "8px",
+      height: "10px",
+      width: "100%",
+      maxWidth: "300px",
+      margin: "0.5rem auto"
+    }}>
+      <div style={{
+        height: "100%",
+        borderRadius: "8px",
+        width: `${(timeLeft / (timerDuration * 60)) * 100}%`,
+        background: timeLeft <= 30 ? "#ff4444" : timeLeft <= 60 ? "#ffaa00" : "#00ffcc",
+        transition: "width 1s linear, background 0.5s"
+      }} />
+    </div>
+    {timeLeft === 0 && (
+      <div style={{ fontSize: "1.5rem", color: "#ff4444", marginTop: "0.5rem" }}>
+        ⏰ Time's up! Vote now!
+      </div>
+    )}
+  </div>
+)}
+
+<div className={s.phaseHint}>Talk to find the imposter!</div>
 
             <button
               className={s.resetBtn}
