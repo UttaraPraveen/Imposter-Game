@@ -11,9 +11,9 @@
 .bgGrid {
   position: fixed;
   inset: 0;
-  background-image: 
-    linear-gradient(rgba(255,60,60,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,60,60,0.03) 1px, transparent 1px);
+  background-image:
+    linear-gradient(rgba(255, 60, 60, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 60, 60, 0.03) 1px, transparent 1px);
   background-size: 50px 50px;
   pointer-events: none;
 }
@@ -23,7 +23,7 @@
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(200,30,30,0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(200, 30, 30, 0.08) 0%, transparent 70%);
   top: -200px;
   right: -200px;
   pointer-events: none;
@@ -48,7 +48,7 @@
   letter-spacing: 8px;
   color: #fff;
   line-height: 1;
-  text-shadow: 0 0 60px rgba(220,30,30,0.4);
+  text-shadow: 0 0 60px rgba(220, 30, 30, 0.4);
 }
 
 .logo h1 span {
@@ -64,8 +64,8 @@
 }
 
 .card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   padding: 32px;
   margin-bottom: 24px;
@@ -91,8 +91,8 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: #fff;
   font-size: 22px;
   cursor: pointer;
@@ -103,7 +103,7 @@
 }
 
 .countBtn:hover {
-  background: rgba(220,30,30,0.2);
+  background: rgba(220, 30, 30, 0.2);
   border-color: #dc1e1e;
 }
 
@@ -140,8 +140,8 @@
 
 .textInput {
   width: 100%;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   padding: 12px 12px 12px 36px;
   color: #fff;
@@ -152,7 +152,7 @@
 }
 
 .textInput:focus {
-  border-color: rgba(220,30,30,0.5);
+  border-color: rgba(220, 30, 30, 0.5);
 }
 
 .textInput::placeholder {
@@ -166,8 +166,8 @@
 }
 
 .genreBtn {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
   padding: 12px;
   color: #aaa;
@@ -179,13 +179,13 @@
 }
 
 .genreBtn:hover {
-  background: rgba(220,30,30,0.1);
-  border-color: rgba(220,30,30,0.3);
+  background: rgba(220, 30, 30, 0.1);
+  border-color: rgba(220, 30, 30, 0.3);
   color: #fff;
 }
 
 .genreBtnSelected {
-  background: rgba(220,30,30,0.15) !important;
+  background: rgba(220, 30, 30, 0.15) !important;
   border-color: #dc1e1e !important;
   color: #fff !important;
 }
@@ -207,7 +207,7 @@
 .startBtn:hover:not(:disabled) {
   background: #ff2828;
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(220,30,30,0.4);
+  box-shadow: 0 8px 30px rgba(220, 30, 30, 0.4);
 }
 
 .startBtn:disabled {
@@ -262,14 +262,14 @@
 }
 
 .flipCardFront {
-  background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.03) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 /* Back face starts rotated 180° so it shows correctly when parent flips */
 .flipCardBack {
   background: linear-gradient(135deg, #1a0a0a 0%, #0f0505 100%);
-  border: 1px solid rgba(220,30,30,0.4);
+  border: 1px solid rgba(220, 30, 30, 0.4);
   transform: rotateY(180deg);
 }
 
@@ -300,12 +300,12 @@
   font-size: 9px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255, 255, 255, 0.4);
   margin-bottom: 8px;
 }
 
 .imposterBack .revealLabel {
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .revealWord {
@@ -319,14 +319,14 @@
 
 .revealGenre {
   font-size: 10px;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255, 255, 255, 0.25);
   margin-top: 6px;
   letter-spacing: 1px;
 }
 
 .tapToHide {
   font-size: 9px;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255, 255, 255, 0.25);
   margin-top: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -337,7 +337,7 @@
   position: absolute;
   inset: 0;
   border-radius: 14px;
-  background: rgba(0,0,0,0.75);
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -352,8 +352,8 @@
 .allSeenBanner {
   text-align: center;
   padding: 16px;
-  background: rgba(220,30,30,0.08);
-  border: 1px solid rgba(220,30,30,0.2);
+  background: rgba(220, 30, 30, 0.08);
+  border: 1px solid rgba(220, 30, 30, 0.2);
   border-radius: 12px;
   margin-bottom: 20px;
   font-size: 13px;
@@ -365,7 +365,7 @@
 .resetBtn {
   width: 100%;
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 14px;
   color: #666;
@@ -379,7 +379,7 @@
 }
 
 .resetBtn:hover {
-  border-color: rgba(220,30,30,0.4);
+  border-color: rgba(220, 30, 30, 0.4);
   color: #dc1e1e;
 }
 
@@ -388,7 +388,8 @@
 .fullscreenOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(5, 5, 10, 0.95); /* Deep dark blur */
+  background: rgba(5, 5, 10, 0.95);
+  /* Deep dark blur */
   backdrop-filter: blur(10px);
   z-index: 1000;
   display: flex;
@@ -404,23 +405,30 @@
 }
 
 .largeCard {
-  height: 300px !important; /* Make the focused card significantly taller */
+  height: 300px !important;
+  /* Make the focused card significantly taller */
 }
 
 .largeCard .revealWord {
-  font-size: 48px; /* Bigger text for focused view */
+  font-size: 48px;
+  /* Bigger text for focused view */
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* ─── Instruction Manual Overlay ───────────────────────── */
 
 .manualBtn {
   width: 100%;
-  background: rgba(220,30,30,0.15);
+  background: rgba(220, 30, 30, 0.15);
   border: 1px solid #dc1e1e;
   border-radius: 12px;
   padding: 14px;
@@ -438,14 +446,14 @@
   background: #dc1e1e;
   color: #fff;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(220,30,30,0.4);
+  box-shadow: 0 6px 20px rgba(220, 30, 30, 0.4);
 }
 
 /* Overlay container */
 .manualOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   z-index: 2000;
   display: flex;
@@ -457,8 +465,8 @@
 
 /* Overlay content */
 .manualContent {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   padding: 32px;
   max-width: 500px;
@@ -487,7 +495,7 @@
   padding: 12px 20px;
   border-radius: 12px;
   border: 1px solid #dc1e1e;
-  background: rgba(220,30,30,0.15);
+  background: rgba(220, 30, 30, 0.15);
   color: #fff;
   font-family: 'Bebas Neue', sans-serif;
   font-size: 14px;
@@ -500,7 +508,7 @@
   background: #dc1e1e;
   color: #fff;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(220,30,30,0.4);
+  box-shadow: 0 6px 20px rgba(220, 30, 30, 0.4);
 }
 
 .musicBtn {
@@ -532,16 +540,17 @@
   background: rgba(0, 255, 200, 0.08);
   border: 1px solid rgba(0, 255, 200, 0.4);
   color: #00ffd0;
-  text-shadow: 0 0 10px #00ffd0, 0 0 25px rgba(0,255,200,0.6);
+  text-shadow: 0 0 10px #00ffd0, 0 0 25px rgba(0, 255, 200, 0.6);
   animation: glowPulse 1.5s infinite alternate;
 }
 
 @keyframes glowPulse {
   from {
-    box-shadow: 0 0 10px rgba(0,255,200,0.4);
+    box-shadow: 0 0 10px rgba(0, 255, 200, 0.4);
   }
+
   to {
-    box-shadow: 0 0 25px rgba(0,255,200,0.8);
+    box-shadow: 0 0 25px rgba(0, 255, 200, 0.8);
   }
 }
 
@@ -568,8 +577,8 @@
 
 .phaseBadge {
   display: inline-block;
-  background: rgba(220,30,30,0.15);
-  border: 1px solid rgba(220,30,30,0.4);
+  background: rgba(220, 30, 30, 0.15);
+  border: 1px solid rgba(220, 30, 30, 0.4);
   border-radius: 20px;
   padding: 6px 18px;
   font-size: 11px;
@@ -610,7 +619,7 @@
 .actionBtn:hover:not(:disabled) {
   background: #ff2828;
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(220,30,30,0.4);
+  box-shadow: 0 8px 30px rgba(220, 30, 30, 0.4);
 }
 
 .actionBtn:disabled {
@@ -630,8 +639,8 @@
 }
 
 .voteCard {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 20px 12px;
   color: #aaa;
@@ -644,16 +653,16 @@
 }
 
 .voteCard:hover {
-  background: rgba(220,30,30,0.1);
-  border-color: rgba(220,30,30,0.3);
+  background: rgba(220, 30, 30, 0.1);
+  border-color: rgba(220, 30, 30, 0.3);
   color: #fff;
 }
 
 .voteCardSelected {
-  background: rgba(220,30,30,0.2) !important;
+  background: rgba(220, 30, 30, 0.2) !important;
   border-color: #dc1e1e !important;
   color: #fff !important;
-  box-shadow: 0 0 20px rgba(220,30,30,0.25);
+  box-shadow: 0 0 20px rgba(220, 30, 30, 0.25);
 }
 
 /* ─── Result Phase ───────────────────────────────────── */
@@ -667,13 +676,13 @@
 }
 
 .verdictCaught {
-  background: rgba(30,180,80,0.1);
-  border: 1px solid rgba(30,180,80,0.4);
+  background: rgba(30, 180, 80, 0.1);
+  border: 1px solid rgba(30, 180, 80, 0.4);
 }
 
 .verdictMissed {
-  background: rgba(220,30,30,0.1);
-  border: 1px solid rgba(220,30,30,0.4);
+  background: rgba(220, 30, 30, 0.1);
+  border: 1px solid rgba(220, 30, 30, 0.4);
 }
 
 .verdictTitle {
@@ -704,4 +713,309 @@
   font-size: clamp(28px, 6vw, 44px);
   letter-spacing: 4px;
   color: #dc1e1e;
+}
+/* ================================================================
+   MOBILE RESPONSIVE OVERHAUL
+   All breakpoints use max-width so desktop is completely untouched.
+   ================================================================ */
+
+/* ── Safe-area insets (notch / Dynamic Island / home bar) ── */
+@supports (padding: max(0px)) {
+  .container {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: max(32px, env(safe-area-inset-bottom));
+  }
+}
+
+/* ── 601px – 768px  (large phones / small tablets) ─────── */
+@media (max-width: 768px) and (min-width: 601px) {
+  .container {
+    padding: 28px 24px;
+  }
+
+  .genreGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px;
+  }
+
+  .genreBtn {
+    padding: 12px 8px;
+    font-size: 0.9rem;
+  }
+
+  .cardsGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  .voteGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  .startBtn,
+  .actionBtn {
+    padding: 16px;
+  }
+}
+
+/* ── ≤ 600px  (most phones in portrait) ─────────────────── */
+@media (max-width: 600px) {
+
+  /* Container */
+  .container {
+    padding: 20px 16px 40px;
+    max-width: 100%;
+  }
+
+  /* Logo */
+  .logo {
+    margin-bottom: 28px;
+  }
+
+  .logo h1 {
+    font-size: clamp(44px, 14vw, 72px);
+    letter-spacing: 4px;
+  }
+
+  .logo p {
+    font-size: 11px;
+    letter-spacing: 3px;
+  }
+
+  .musicBtn {
+    font-size: 12px;
+    padding: 8px 14px;
+    margin-top: 10px;
+  }
+
+  /* Cards (setup panels) */
+  .card {
+    padding: 20px 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+
+  .sectionLabel {
+    font-size: 10px;
+    margin-bottom: 12px;
+  }
+
+  /* Player count row */
+  .playerCountRow {
+    gap: 24px;
+    justify-content: center;
+  }
+
+  .countBtn {
+    width: 52px;
+    height: 52px;
+    font-size: 26px;
+  }
+
+  .countDisplay {
+    font-size: 52px;
+    min-width: 52px;
+  }
+
+  /* Player name inputs — single column, full width */
+  .playerInputs {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  .playerInputWrap {
+    width: 100%;
+  }
+
+  .textInput {
+    min-height: 48px;
+    font-size: 16px;
+    /* prevents iOS auto-zoom on focus */
+    padding: 12px 12px 12px 36px;
+  }
+
+  /* Genre grid — 2 columns */
+  .genreGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px;
+  }
+
+  .genreBtn {
+    padding: 14px 10px;
+    font-size: 13px;
+    border-radius: 10px;
+    min-height: 52px;
+    line-height: 1.3;
+  }
+
+  /* CTA buttons */
+  .startBtn {
+    padding: 18px;
+    font-size: 22px;
+  }
+
+  .manualBtn {
+    font-size: 15px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  .resetBtn {
+    padding: 14px;
+    font-size: 13px;
+    margin-top: 16px;
+  }
+
+  /* Cards grid (reveal phase) — 2 columns */
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px;
+  }
+
+  .flipCard {
+    height: 100px;
+  }
+
+  .playerName {
+    font-size: 18px;
+  }
+
+  .tapHint {
+    font-size: 9px;
+  }
+
+  /* Vote grid — 2 columns */
+  .voteGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px;
+  }
+
+  .voteCard {
+    font-size: 17px;
+    padding: 16px 8px;
+  }
+
+  /* Phase UI */
+  .phaseBadge {
+    font-size: 10px;
+    padding: 6px 14px;
+  }
+
+  .phaseHint {
+    font-size: 12px;
+    margin-bottom: 20px;
+    padding: 0 4px;
+  }
+
+  .actionBtn {
+    font-size: 20px;
+    padding: 16px;
+    letter-spacing: 3px;
+  }
+
+  /* Banners */
+  .allSeenBanner {
+    font-size: 11px;
+    padding: 12px;
+    letter-spacing: 1.5px;
+  }
+
+  .starterBanner {
+    font-size: 18px;
+    padding: 14px 12px;
+    margin: 14px 0;
+    letter-spacing: 1px;
+  }
+
+  .rerollBtn {
+    margin-top: 10px;
+    padding: 8px 14px;
+    font-size: 12px;
+    display: inline-block;
+  }
+
+  /* Fullscreen reveal overlay */
+  .fullscreenOverlay {
+    padding: 16px;
+    align-items: center;
+  }
+
+  .focusedCardWrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .largeCard {
+    height: 260px !important;
+    width: 100% !important;
+  }
+
+  .largeCard .revealWord {
+    font-size: clamp(32px, 10vw, 48px);
+    word-break: break-word;
+  }
+
+  .revealLabel {
+    font-size: 9px;
+  }
+
+  .revealGenre {
+    font-size: 10px;
+  }
+
+  .tapToHide {
+    font-size: 9px;
+    margin-top: 10px;
+  }
+
+  /* Manual overlay */
+  .manualContent {
+    padding: 24px 18px;
+    border-radius: 12px;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .manualContent ul {
+    font-size: 13px;
+  }
+
+  .closeManualBtn {
+    padding: 12px 18px;
+    font-size: 13px;
+  }
+
+  /* Result card */
+  .resultCard {
+    padding: 24px 18px;
+  }
+}
+
+/* ── ≤ 360px  (very small / budget Android phones) ──────── */
+@media (max-width: 360px) {
+  .logo h1 {
+    font-size: 38px;
+    letter-spacing: 3px;
+  }
+
+  .genreGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .genreBtn {
+    font-size: 12px;
+    padding: 12px 6px;
+  }
+
+  .countDisplay {
+    font-size: 44px;
+  }
+
+  .flipCard {
+    height: 88px;
+  }
+
+  .playerName {
+    font-size: 15px;
+  }
 }
