@@ -4,6 +4,16 @@ import s from "./ImposterGame.module.css";
 import InstructionManual from "./InstructionManual";
 import bgMusic from "../../assets/imposter.mp3";
 
+
+const generateHint = (word) => {
+  const hints = [
+    `Starts with "${word[0]}"`,
+    `Word length: ${word.length}`
+  ];
+
+  return hints[Math.floor(Math.random() * hints.length)];
+};
+
 export default function ImposterGame() {
   const [phase, setPhase] = useState("setup");
   const [playerCount, setPlayerCount] = useState(4);
@@ -15,7 +25,7 @@ export default function ImposterGame() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [showManual, setShowManual] = useState(false);
   const [suspect, setSuspect] = useState(null);
-
+  const [showHint,setShowHint]=useState(false);
   const [musicOn, setMusicOn] = useState(true);
   const audioRef = useRef(null);
 
@@ -65,17 +75,23 @@ export default function ImposterGame() {
   };
 
   const startGame = useCallback(() => {
-    const players = playerNames.slice(0, playerCount).map((n) => n.trim());
-    const roles = assignRoles(players, selectedGenre);
-    setGameData({ ...roles, players });
-    setFlipped([]);
-    setSeen([]);
-    setSelectedCard(null);
-    setSuspect(null);
-    setPhase("cards");
-    setStartingPlayerIndex(null);
-    setShowStarter(false);
-  }, [playerNames, playerCount, selectedGenre]);
+  const players = playerNames.slice(0, playerCount).map((n) => n.trim());
+  const roles = assignRoles(players, selectedGenre);
+
+  let hint = null;
+
+  if (showHint) {
+    hint = generateHint(roles.word, roles.genre);
+  }
+
+  setGameData({ ...roles, players, hint });
+  setFlipped([]);
+  setSeen([]);
+  setSelectedCard(null);
+  setPhase("cards");
+  setStartingPlayerIndex(null);
+  setShowStarter(false);
+}, [playerNames, playerCount, selectedGenre, showHint]);
 
   const handleFlip = (i) => {
     if (flipped.includes(i)) {
@@ -167,16 +183,27 @@ export default function ImposterGame() {
             </button>
             {showManual && <InstructionManual onClose={() => setShowManual(false)} />}
 
-            <button className={s.startBtn} disabled={!canStart} onClick={startGame}>
-              Start Game
-            </button>
+            <div style={{ marginBottom: "10px" }}>
+  <label>
+    <input
+      type="checkbox"
+      checked={showHint}
+      onChange={() => setShowHint(!showHint)}
+    />
+    {" "}Show hint to imposter
+  </label>
+</div>
+
+<button className={s.startBtn} disabled={!canStart} onClick={startGame}>
+  Start Game
+</button>
           </div>
         ) : phase === "cards" ? (
           <div className={s.gameView}>
             <div className={s.phaseBadge}>🃏 Reveal Phase</div>
             <div className={s.phaseHint}>Each player, tap your card privately to see your role.</div>
 
-            {/* FULLSCREEN OVERLAY: Shows only when a card is selected */}
+            
             {selectedCard !== null && (
               <div className={s.fullscreenOverlay} onClick={() => handleFlip(selectedCard)}>
                 <div className={s.focusedCardWrapper}>
@@ -187,8 +214,13 @@ export default function ImposterGame() {
                           {selectedCard === gameData.imposterIndex ? "⚠ You Are" : "Your Word"}
                         </div>
                         <div className={s.revealWord}>
-                          {selectedCard === gameData.imposterIndex ? "IMPOSTER" : gameData.word}
-                        </div>
+  {selectedCard === gameData.imposterIndex ? "IMPOSTER" : gameData.word}
+</div>
+{selectedCard === gameData.imposterIndex && showHint && gameData.hint && (
+  <div style={{ marginTop: "10px", fontSize: "14px", opacity: 0.8 }}>
+    Hint: {gameData.hint}
+  </div>
+)}
                         {selectedCard !== gameData.imposterIndex && (
                           <div className={s.revealGenre}>
                             {gameData.genre.split(" ").slice(1).join(" ")}
