@@ -34,7 +34,7 @@ Keep your role secret 👀.
 
 ### 4️⃣ Discuss
 
-Players describe the word carefully — not too obvious, not too vague.
+The game randomly picks who starts the discussion round. Players describe the word carefully — not too obvious, not too vague.
 
 The Imposter must:
 
@@ -44,7 +44,11 @@ The Imposter must:
 
 ### 5️⃣ Vote
 
-After discussion, everyone votes for who they think the Imposter is!
+After discussion, everyone votes for who they think the Imposter is by selecting their name from the list.
+
+### 6️⃣ Result
+
+The final verdict! The game reveals if the suspect was the imposter (Caught!) or an innocent player (Wrong Guess!). The secret word is also revealed to everyone.
 
 ---
 
@@ -65,7 +69,16 @@ The game flows through three distinct phases, ensuring a smooth and engaging exp
 ### 3️⃣ Discussion Phase
 * **Starting Player**: The game automatically selects a random player to "start the round" to break the ice (with a **Re-roll** option if needed).
 * **The Hunt**: Players describe their word without being too obvious. The Imposter tries to blend in by interpreting clues.
-* **The Vote**: Once the tension peaks, the group votes to eliminate who they think is the Imposter.
+* **Cleanup**: Once the round starts, cards are hidden to keep the UI clean and the focus on the debate.
+
+### 4️⃣ Voting Phase
+* **Suspect List**: A clear grid of all players' names is displayed.
+* **The Vote**: Once the group consensus is reached, select the most suspicious player.
+* **Commit**: Confirm your choice to proceed to the final reveal.
+
+### 5️⃣ Result Phase
+* **The Verdict**: Find out if the group captured the Imposter or if the Imposter won the round.
+* **The Reveal**: The secret word is displayed for both the Imposter and the common players.
 
 ---
 
