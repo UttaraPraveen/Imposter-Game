@@ -88,6 +88,7 @@ export default function ImposterGame() {
   setFlipped([]);
   setSeen([]);
   setSelectedCard(null);
+  setSuspect(null);
   setPhase("cards");
   setStartingPlayerIndex(null);
   setShowStarter(false);
@@ -262,31 +263,96 @@ export default function ImposterGame() {
               </>
             )}
 
-            <div className={s.cardsGrid}>
-              {gameData.players.map((name, i) => {
-                const isFlipped = flipped.includes(i);
-                const isSeen = seen.includes(i);
+            {!allSeen && (
+              <div className={s.cardsGrid}>
+                {gameData.players.map((name, i) => {
+                  const isFlipped = flipped.includes(i);
+                  const isSeen = seen.includes(i);
 
-                return (
-                  <div
-                    key={i}
-                    className={s.flipCard}
-                    onClick={() => !isSeen && handleFlip(i)}
-                  >
-                    <div className={`${s.flipCardInner} ${isFlipped ? s.flipped : ""}`}>
-                      <div className={s.flipCardFront}>
-                        {isSeen && !isFlipped && (
-                          <div className={s.seenOverlay}>Seen ✓</div>
-                        )}
-                        <span className={s.playerName}>{name}</span>
-                        <span className={s.tapHint}>Tap to reveal</span>
+                  return (
+                    <div
+                      key={i}
+                      className={s.flipCard}
+                      onClick={() => !isSeen && handleFlip(i)}
+                    >
+                      <div className={`${s.flipCardInner} ${isFlipped ? s.flipped : ""}`}>
+                        <div className={s.flipCardFront}>
+                          {isSeen && !isFlipped && (
+                            <div className={s.seenOverlay}>Seen ✓</div>
+                          )}
+                          <span className={s.playerName}>{name}</span>
+                          <span className={s.tapHint}>Tap to reveal</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            )}
 
+            <button
+              className={s.resetBtn}
+              onClick={() => {
+                setPhase("setup");
+                setStartingPlayerIndex(null);
+                setShowStarter(false);
+              }}
+            >
+              ← New Game
+            </button>
+          </div>
+        ) : phase === "discussion" ? (
+          <div className={s.gameView}>
+            <div className={s.phaseBadge}>💬 Discussion Phase</div>
+
+            {showStarter && startingPlayerIndex !== null && (
+              <div className={s.starterBanner}>
+                ✨ {gameData.players[startingPlayerIndex]} starts the round!
+              </div>
+            )}
+
+            <div className={s.phaseHint}>Talk to find the imposter!</div>
+
+            <button
+              className={s.actionBtn}
+              onClick={() => setPhase("voting")}
+            >
+              Start Voting →
+            </button>
+
+            <button
+              className={s.resetBtn}
+              onClick={() => {
+                setPhase("setup");
+                setStartingPlayerIndex(null);
+                setShowStarter(false);
+              }}
+            >
+              ← Home
+            </button>
+          </div>
+        ) : phase === "voting" ? (
+          <div className={s.gameView}>
+            <div className={s.phaseBadge}>🗳️ Voting Phase</div>
+            <div className={s.phaseHint}>Who do you all think is the imposter? Select your suspect.</div>
+            <div className={s.voteGrid}>
+              {gameData.players.map((name, i) => (
+                <button
+                  key={i}
+                  className={`${s.voteCard} ${suspect === i ? s.voteCardSelected : ""}`}
+                  onClick={() => setSuspect(i)}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
+            <button
+              className={s.actionBtn}
+              disabled={suspect === null}
+              onClick={() => setPhase("result")}
+            >
+              Reveal Result →
+            </button>
             <button
               className={s.resetBtn}
               onClick={() => {
@@ -300,25 +366,28 @@ export default function ImposterGame() {
           </div>
         ) : (
           <div className={s.gameView}>
-            <div className={s.phaseBadge}>💬 Discussion Phase</div>
-
-            {showStarter && startingPlayerIndex !== null && (
-              <div className={s.starterBanner}>
-                ✨ {gameData.players[startingPlayerIndex]} starts the round!
+            <div className={s.phaseBadge}>🏆 Result</div>
+            <div className={`${s.resultCard} ${suspect === gameData.imposterIndex ? s.verdictCaught : s.verdictMissed}`}>
+              <div className={s.verdictTitle}>
+                {suspect === gameData.imposterIndex ? "✓ Imposter Caught!" : "✕ Wrong Guess!"}
               </div>
-            )}
-
-            <div className={s.phaseHint}>Talk to find the imposter!</div>
-
+              <div className={s.verdictDetail}>
+                {suspect === gameData.imposterIndex
+                  ? `${gameData.players[suspect]} was the imposter.`
+                  : `${gameData.players[gameData.imposterIndex]} was the real imposter!`}
+              </div>
+              <div className={s.resultWordLabel}>Secret Word</div>
+              <div className={s.resultWord}>{gameData.word}</div>
+            </div>
             <button
-              className={s.resetBtn}
+              className={s.actionBtn}
               onClick={() => {
                 setPhase("setup");
                 setStartingPlayerIndex(null);
                 setShowStarter(false);
               }}
             >
-              ← Home
+              New Game
             </button>
           </div>
         )}
