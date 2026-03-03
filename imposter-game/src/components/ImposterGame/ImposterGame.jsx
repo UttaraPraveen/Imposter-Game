@@ -23,11 +23,14 @@ export default function ImposterGame() {
   const [flipped, setFlipped] = useState([]);
   const [seen, setSeen] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [customTopic, setCustomTopic] = useState("");
+  const [customWords, setCustomWords] = useState("");
   const [showManual, setShowManual] = useState(false);
   const [suspect, setSuspect] = useState(null);
   const [showHint,setShowHint]=useState(false);
   const [musicOn, setMusicOn] = useState(true);
   const audioRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const audio = new Audio(bgMusic);
@@ -75,23 +78,33 @@ export default function ImposterGame() {
   };
 
   const startGame = useCallback(() => {
-  const players = playerNames.slice(0, playerCount).map((n) => n.trim());
-  const roles = assignRoles(players, selectedGenre);
+    const players = playerNames.slice(0, playerCount).map((n) => n.trim());
+    
+    let roles;
+    if (selectedGenre === "✨ Custom") {
+      const words = customWords
+        .split(/[,\s]+/)
+        .map((w) => w.trim())
+        .filter((w) => w.length > 0);
+      roles = assignRoles(players, customTopic, words);
+    } else {
+      roles = assignRoles(players, selectedGenre);
+    }
 
-  let hint = null;
+    let hint = null;
 
-  if (showHint) {
-    hint = generateHint(roles.word, roles.genre);
-  }
+    if (showHint) {
+      hint = generateHint(roles.word, roles.genre);
+    }
 
-  setGameData({ ...roles, players, hint });
-  setFlipped([]);
-  setSeen([]);
-  setSelectedCard(null);
-  setPhase("cards");
-  setStartingPlayerIndex(null);
-  setShowStarter(false);
-}, [playerNames, playerCount, selectedGenre, showHint]);
+    setGameData({ ...roles, players, hint });
+    setFlipped([]);
+    setSeen([]);
+    setSelectedCard(null);
+    setPhase("cards");
+    setStartingPlayerIndex(null);
+    setShowStarter(false);
+  }, [playerNames, playerCount, selectedGenre, customTopic, customWords, showHint]);
 
   const handleFlip = (i) => {
     if (flipped.includes(i)) {
@@ -106,11 +119,35 @@ export default function ImposterGame() {
     }
   };
 
-  const canStart = playerNames.slice(0, playerCount).every((n) => n.trim()) && selectedGenre;
+  const canStart =
+    playerNames.slice(0, playerCount).every((n) => n.trim()) &&
+    selectedGenre &&
+    (selectedGenre !== "✨ Custom" ||
+      (customTopic.trim() &&
+        customWords
+          .split(/[,\s]+/)
+          .map((w) => w.trim())
+          .filter((w) => w.length > 0).length >= 3));
   const allSeen = gameData && seen.length === gameData.players.length;
 
   const [startingPlayerIndex, setStartingPlayerIndex] = useState(null);
   const [showStarter, setShowStarter] = useState(false);
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target.result;
+      setCustomWords(content);
+    };
+    reader.readAsText(file);
+  };
+
+  const triggerFileUpload = () => {
+    fileInputRef.current?.click();
+  };
 
   useEffect(() => {
     if (allSeen && startingPlayerIndex === null) {
@@ -176,7 +213,48 @@ export default function ImposterGame() {
                     {genre}
                   </button>
                 ))}
+                <button
+                  className={`${s.genreBtn} ${selectedGenre === "✨ Custom" ? s.genreBtnSelected : ""}`}
+                  onClick={() => setSelectedGenre("✨ Custom")}
+                >
+                  ✨ Custom
+                </button>
               </div>
+
+              {selectedGenre === "✨ Custom" && (
+                <div className={s.customSection}>
+                  <div className={s.sectionLabel} style={{ marginTop: "20px" }}>Custom Topic Name</div>
+                  <input
+                    className={s.textInput}
+                    type="text"
+                    placeholder="e.g. Inside Jokes"
+                    value={customTopic}
+                    onChange={(e) => setCustomTopic(e.target.value)}
+                  />
+                  <div className={s.sectionLabel} style={{ marginTop: "20px" }}>Custom Words</div>
+                  <div className={s.customWordsHeader}>
+                    <button className={s.uploadBtn} onClick={triggerFileUpload}>
+                      📁 Upload File (.txt, .csv)
+                    </button>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileUpload}
+                      accept=".txt,.csv"
+                      style={{ display: "none" }}
+                    />
+                  </div>
+                  <textarea
+                    className={s.textArea}
+                    placeholder="Enter words separated by space or comma (min 3)"
+                    value={customWords}
+                    onChange={(e) => setCustomWords(e.target.value)}
+                  />
+                  <div className={s.wordCountHint}>
+                    Words detected: {customWords.split(/[,\s]+/).filter(w => w.trim()).length}
+                  </div>
+                </div>
+              )}
             </div>
             <button className={s.manualBtn} onClick={() => setShowManual(true)}>
               Show Instructions
@@ -223,7 +301,7 @@ export default function ImposterGame() {
 )}
                         {selectedCard !== gameData.imposterIndex && (
                           <div className={s.revealGenre}>
-                            {gameData.genre.split(" ").slice(1).join(" ")}
+                            {selectedGenre === "✨ Custom" ? gameData.genre : gameData.genre.split(" ").slice(1).join(" ")}
                           </div>
                         )}
                         <div className={s.tapToHide}>Tap to close and hide</div>

@@ -16,9 +16,9 @@ export const cryptoRandom = (max) => {
   return array[0] % max;
 };
 
-export const assignRoles = (players, selectedGenre) => {
+export const assignRoles = (players, selectedGenre, customWords = null) => {
   const imposterIndex = cryptoRandom(players.length);
-  const words = GENRES[selectedGenre];
+  const words = customWords || GENRES[selectedGenre];
   const word = words[cryptoRandom(words.length)];
   return { imposterIndex, word, genre: selectedGenre };
 };

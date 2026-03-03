@@ -159,6 +159,71 @@
   color: #444;
 }
 
+.customSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fadeIn 0.4s ease;
+}
+
+.textArea {
+  width: 100%;
+  min-height: 100px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 12px;
+  color: #fff;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: vertical;
+}
+
+.textArea:focus {
+  border-color: rgba(220, 30, 30, 0.5);
+}
+
+.textArea::placeholder {
+  color: #444;
+}
+
+.wordCountHint {
+  font-size: 11px;
+  color: #666;
+  text-align: right;
+  letter-spacing: 1px;
+}
+
+.customWordsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.uploadBtn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: #aaa;
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.uploadBtn:hover {
+  background: rgba(220, 30, 30, 0.1);
+  border-color: rgba(220, 30, 30, 0.3);
+  color: #fff;
+}
+
 .genreGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
